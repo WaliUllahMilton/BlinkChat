@@ -63,6 +63,7 @@ export const userForgotPass = async(req,res)=>{
         const existingUser = await users.findOne({email : email});
         if(existingUser){
             const data = await users.findByIdAndUpdate({_id :existingUser._id},{password : password});
+            data.save()
             return res.status(200).json({
                 success : true,
                 message : "updated"
