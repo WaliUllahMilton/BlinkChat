@@ -55,3 +55,25 @@ export const usersLogin = async (req,res)=>{
         console.log(error)
     }
 }
+
+
+export const userForgotPass = async(req,res)=>{
+    const {email,password} = req.body;
+    try {
+        const existingUser = await users.findOne({email : email});
+        if(existingUser){
+            const data = await users.findByIdAndUpdate({_id :existingUser._id},{password : password});
+            return res.status(200).json({
+                success : true,
+                message : "updated"
+            })
+        }else{
+            return res.status(400).json({
+                success :false,
+                message : "not a valid user"
+            })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}

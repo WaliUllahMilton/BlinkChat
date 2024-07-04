@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import { userRegistration, usersLogin } from "./middlewares/userMiddleware.js";
+import { userForgotPass, userRegistration, usersLogin } from "./middlewares/userMiddleware.js";
 
 //.env file load
 config();
@@ -26,3 +26,4 @@ app.get("/",(req,res)=>{
 
 app.post("/registration",userRegistration)
 app.post("/login",usersLogin)
+app.post("/forget",userForgotPass)
