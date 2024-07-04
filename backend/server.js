@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import { userRegistration } from "./middlewares/userMiddleware.js";
+import { userRegistration, usersLogin } from "./middlewares/userMiddleware.js";
 
 //.env file load
 config();
@@ -10,6 +10,7 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 //mongoose connection
+// const DB = mongoose.connect(process.env.DB)
 const DB = mongoose.connect(process.env.DB)
 DB.then(console.log("mongoose connected"))
 
@@ -24,3 +25,4 @@ app.get("/",(req,res)=>{
 })
 
 app.post("/registration",userRegistration)
+app.post("/login",usersLogin)

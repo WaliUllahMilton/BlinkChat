@@ -6,7 +6,7 @@ export const userRegistration = async (req,res)=>{
         if(!name || !email || !phone || !address || !password){
             return res.status(400).json({
                 success : false,
-                data : "please fill all data"
+                message : "please fill all data"
             })
         }
         const existingUser = await users.findOne({email : email})
@@ -14,14 +14,14 @@ export const userRegistration = async (req,res)=>{
             
             return res.status(400).json({
                 success: false,
-                data : "user allready exists",
+                message : "user allready exists",
             })
         }
         const existingPhoneNumber = await users.findOne({phone:phone})
         if(existingPhoneNumber){
             return res.status(400).json({
                 success : false,
-                data : "phone number have allready used"
+                message : "phone number have allready used"
             })
         }
         const data = await users({name:name,email:email,phone:phone,address:address,password:password})
@@ -29,6 +29,27 @@ export const userRegistration = async (req,res)=>{
         return res.status(201).json({
             success:true,
             data:data
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export const usersLogin = async (req,res)=>{
+    const {email,password} = req.body;
+    try {
+        if(!email || !password){
+            return res.status(400).json({
+                success : false,
+                message : "You can't login without email and password"
+            })
+        } 
+        const data = await users.find({email : email, password : password});
+        res.status(200).json({
+        success : true,
+        message : "login",
+        data
         })
     } catch (error) {
         console.log(error)
