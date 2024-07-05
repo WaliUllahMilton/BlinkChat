@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "name": "blinkchat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "server" :"concurrently \"cd backend && npm run nodemon\"  \"cd frontend && npm run dev\""
+  },
+  "author": "",
+  "license": "ISC"
+}
