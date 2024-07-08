@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react'
+import {useState } from 'react'
 import Input from './Input'
 import Button from './Btn'
 import axios from "axios"
 import { IoClose } from "react-icons/io5";
 
-const SignUp = () => {
+const SignUp = ({onClick}) => {
     const [name,setName]=useState("")
     const [email,setEmail]=useState("")
     const [phone,setPhone]=useState("")
@@ -31,9 +31,11 @@ const SignUp = () => {
         }
     }
   return (
-    <section className='absolute -top-7 right-[50%] px-20 bg-yellow-200'>
-        <div className='bg-slate-300 px-8 py-12 relative'>
-            <span className='absolute right-2 top-2 text-2xl'><IoClose/></span>
+    <section className='absolute top-10 right-[50%] translate-x-[50%] z-50 px-20 transition-all ease-in-out duration-300'>
+        <div className='bg-slate-800 px-8 py-12 relative'>
+            <span className='absolute right-2 top-2 text-white text-2xl'
+            onClick={onClick}
+            ><IoClose/></span>
         <ul className='flex flex-col gap-6 items-center'>
             <Input placeholder="name"
             value={name}

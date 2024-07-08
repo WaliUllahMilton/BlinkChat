@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 import Input from './Input'
 import Button from './Btn'
-import SignUp from './SignUp'
 import axios from 'axios'
 const Login = () => {
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
-    const [toggleSignupBtn,setToggleSignupBtn] = useState(false)
-    console.log(toggleSignupBtn)
     const handleLogin = async ()=>{
         try {
             const data = await axios.post("http://localhost:3000/login",{
@@ -38,14 +35,10 @@ const Login = () => {
         </ul>
         <div className='flex flex-col justify-center items-center mt-4 gap-4'>
         <p>Forget Password ?</p>
-        <Button text="Create a new Account"
-        onClick={()=>setToggleSignupBtn(!toggleSignupBtn)}
-        />
+        
         </div>
         </div>
-        {
-            toggleSignupBtn ? <SignUp/> : ""
-        }
+        
    </section>
   )
 }

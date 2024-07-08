@@ -16,7 +16,6 @@ app.use(cors())
 // const DB = mongoose.connect(process.env.DB)
 const DB = mongoose.connect(process.env.DB)
 DB.then(console.log("mongoose connected"))
-
 //server start
 
 app.listen(3000,()=>{
@@ -27,8 +26,9 @@ app.get("/",(req,res)=>{
     res.send("hello")
 })
 
-app.post("http://localhost:3000/registration",userRegistration)
-app.post("http://localhost:3000/login",usersLogin)
+app.post(`/registration`,userRegistration)
+
+app.post(`/login`,usersLogin)
 app.post("/forget",userForgotPass)
 
 app.post("/message-send/:user", sendMessage)
