@@ -19,7 +19,7 @@ const Home = () => {
       <h1 className="text-[7vw]  font-bold text-rose-500">Blink<span className="text-blue-500">Chat</span></h1>
       <p className="text-base font-normal ml-1">We promise to keep your data Encrypted</p>
       </div>
-      <div>
+      <div className="bg-slate-500 px-4 py-8 rounded-md shadow-lg shadow-cyan-200 flex flex-col items-center"> 
       <Login/>
       <Button text="Create a new Account"
         onClick={()=>setToggleSignupBtn(!toggleSignupBtn)}

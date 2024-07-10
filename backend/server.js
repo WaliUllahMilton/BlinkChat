@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { userForgotPass, userRegistration, usersLogin } from "./middlewares/userMiddleware.js";
 import { sendMessage } from "./middlewares/messageMiddleware.js";
 import cors from "cors"
+import { users } from "./model/userModel.js";
 //.env file load
 config();
 //express 
@@ -32,3 +33,20 @@ app.post(`/login`,usersLogin)
 app.post("/forget",userForgotPass)
 
 app.post("/message-send/:user", sendMessage)
+
+app.get('/usersList', async (req, res) => {
+
+    try {
+        const userList = await users.find({});
+
+        // You can directly send the array of users if needed
+        res.status(200).json(userList);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+    
+    });

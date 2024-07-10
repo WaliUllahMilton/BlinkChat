@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react'
 import Input from './Input'
 import Button from './Btn'
@@ -7,11 +8,8 @@ import { useDispatch } from 'react-redux';
 import  { userSignUp } from '../features/reducers/userSlice';
 
 const SignUp = ({onClick}) => {
-    // const [name,setName]=useState("")
-    // const [email,setEmail]=useState("")
-    // const [phone,setPhone]=useState("")
-    // const [address,setAddress]=useState("")
-    // const [password,setPassword]=useState("")
+    
+    const dispatch = useDispatch()
     const [formData,setFormData] = useState({
         name : "",
         email : "",
@@ -23,7 +21,6 @@ const SignUp = ({onClick}) => {
     const handleInputChange = (e)=>{
         setFormData({...formData,[e.target.name] : e.target.value})
     }
-    const dispatch = useDispatch()
     const handleSignup = ()=>{
         // const {name,email,phone,address,password} = formData;
         const { name, email, phone, address, password } = formData;

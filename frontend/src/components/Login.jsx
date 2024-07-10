@@ -1,37 +1,54 @@
 import React, { useState } from 'react'
 import Input from './Input'
 import Button from './Btn'
-import axios from 'axios'
+// import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import { userLogin } from '../features/reducers/userSlice'
 const Login = () => {
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
-    const handleLogin = async ()=>{
-        try {
-            const data = await axios.post("http://localhost:3000/login",{
-                email : email,
-                password : password
-            })
-            if(data){
-               setEmail("")
-               setPassword("")
-            }
-        } catch (error) {
-            console.log(error)
-        }
+    const navigate =useNavigate()
+    const dispatch =useDispatch()
+    const [formData,setFormData] = useState({
+        email : "",
+        password : ""
+    })
+    const onChangeValue = (e)=>{
+        setFormData({...formData,[e.target.name] : e.target.value})
+    }
+    const handleLogin = async (e)=>{
+        e.preventDefault();
+        const {email,password} = formData
+        dispatch(userLogin({email,password}))
+
+        // try {
+        //     const data = await axios.post("http://localhost:3000/login",{
+        //         email : email,
+        //         password : password
+        //     })
+        //     if(data){
+        //        setEmail("")
+        //        setPassword("")
+        //        navigate("/home")
+        //     }
+        // } catch (error) {
+        //     console.log(error)
+        // }
     }
   return (
-   <section className='relative'>
-         <div className='bg-slate-500 px-4 py-8 rounded-md shadow-lg shadow-cyan-200'>
+   <section className='relative mb-6'>
+         <div className=''>
         <ul className='flex flex-col max-w-[30vw] items-center gap-6' >
             <Input placeholder="Email Address"
-            value={email}
-            onChange={(e)=>setEmail(e.target.value)}
+            value={formData.email}
+            name="email"
+            onChange={onChangeValue}
             />
             <Input placeholder="Password"
-            value={password}
-            onChange={(e)=>setPassword(e.target.value)}
+            value={formData.password}
+            name="password"
+            onChange={onChangeValue}
             />
-            <Button text="Login" onClick={handleLogin}/>
+            <Button text="Login" onClick={(e)=>handleLogin(e)}/>
         </ul>
         <div className='flex flex-col justify-center items-center mt-4 gap-4'>
         <p>Forget Password ?</p>
