@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, {  useState } from 'react'
 import Input from './Input'
 import Button from './Btn'
 // import axios from 'axios'
-import { useDispatch } from 'react-redux'
+// import { useDispatch, useSelector } from 'react-redux'
 import {useNavigate} from 'react-router-dom'
-import { userLogin } from '../features/reducers/userSlice'
+// import { userLogin } from '../features/reducers/userSlice'
+import axios from 'axios'
 const Login = () => {
     const navigate =useNavigate()
-    const dispatch =useDispatch()
+    // const dispatch =useDispatch()
+    // const user = useSelector(state=>state.user)
+    // console.log(user)
     const [formData,setFormData] = useState({
         email : "",
         password : ""
@@ -18,21 +21,24 @@ const Login = () => {
     const handleLogin = async (e)=>{
         e.preventDefault();
         const {email,password} = formData
-        dispatch(userLogin({email,password}))
-
-        // try {
-        //     const data = await axios.post("http://localhost:3000/login",{
-        //         email : email,
-        //         password : password
-        //     })
-        //     if(data){
-        //        setEmail("")
-        //        setPassword("")
-        //        navigate("/home")
-        //     }
-        // } catch (error) {
-        //     console.log(error)
-        // }
+        // dispatch(userLogin({email,password}))
+        
+        try {
+            const response = await axios.post("http://localhost:3000/login",{
+                email : email,
+                password : password
+            })
+            if(response){
+               setFormData({
+                    email : "",
+                    password : ""
+                })
+                localStorage.setItem("user",JSON.stringify(response.data))
+               navigate("/home")
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
   return (
    <section className='relative mb-6'>

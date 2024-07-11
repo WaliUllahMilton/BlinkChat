@@ -1,14 +1,14 @@
 {
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "passport-jwt": "^4.0.1"
   },
   "name": "blinkchat",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
-    "server" :"concurrently \"cd backend && npm run nodemon\"  \"cd frontend && npm run dev\""
+    "server": "concurrently \"cd backend && npm run nodemon\"  \"cd frontend && npm run dev\""
   },
   "author": "",
   "license": "ISC"

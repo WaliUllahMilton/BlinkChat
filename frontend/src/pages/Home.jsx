@@ -1,17 +1,33 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
 // import SignUp from "../components/SignUp"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "../components/Btn"
 import Login from "../components/Login"
 import SignUp from "../components/SignUp"
+import { Navigate, } from "react-router-dom"
 
 
 const Home = () => {
   const [toggleSignupBtn,setToggleSignupBtn] = useState(false)
-  console.log(toggleSignupBtn)
+  const [auth,setAuth]=useState(null);
+  
+  const authCheck = ()=>{
+    const user = localStorage.getItem("user");
+    setAuth(JSON.parse(user));
+  }
+  console.log(auth)
+  useEffect(()=>{
+    authCheck();
+  },[])
+  if(auth !== null){
+     return <Navigate to="/home" replace={true}/>;
+  }
+
   return (
-    <section className="max-w-container py-32  flex justify-between items-center mx-auto">
+    <>
+        <section className="max-w-container py-32  flex justify-between items-center mx-auto">
       {
         toggleSignupBtn && <div className="w-container transition-all ease-in-out duration-300 h-full bg-white absolute top-0 z-20 opacity-50"></div>
       }
@@ -28,8 +44,8 @@ const Home = () => {
         toggleSignupBtn ? <SignUp onClick={()=>setToggleSignupBtn(!toggleSignupBtn)}/> : ""
       }
       </div>
-      
     </section>
+    </>
   )
 }
 

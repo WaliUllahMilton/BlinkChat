@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
-// import { useNavigate } from 'react-router-dom'
-
-// const navigate = useNavigate()
+// import { redirect } from 'react-router-dom'
 
 const initialState = {
+    isLoading : true,
     id : null,
     name : null,
     email : null,
@@ -41,6 +40,7 @@ export const userLogin = createAsyncThunk("user/login",
                 email,
                 password
             })
+            localStorage.setItem("user",JSON.stringify(response.data))
             return response.data
         } catch (error) {
             console.log(error);
@@ -55,35 +55,37 @@ const userSlice = createSlice({
         builder.addCase(userSignUp.pending,(state)=>{
             state.status = "pending";
         }).addCase(userSignUp.fulfilled,(state,action)=>{
-            state.status = "successfully sign up";
-            state.id = action.payload.data._id;
-            state.name = action.payload.data.name;
-            state.email = action.payload.data.email;
-            state.address = action.payload.data.address;
-            state.phone =action.payload.data.phone;
-            state.error = null;
-            localStorage.setItem("user",JSON.stringify({
-                id : action.payload.data._id,
-                name : action.payload.data.name,
-                email : action.payload.data.email,
-                address : action.payload.data.addCase,
-                phone : action.payload.data.phone
-            }))
-        }).addCase(userSignUp.rejected, (state, action) => {
-            state.status = "sign up failed";
-            state.error = action.payload; // Store the error message
-        }).addCase(userLogin.pending,(state)=>{
-            state.status = "pending";
-        }).addCase(userLogin.fulfilled,(state,action)=>{
-            state.status = "successfully sign up";
+            state.status = "ok";
             state.id = action.payload.user._id;
             state.name = action.payload.user.name;
             state.email = action.payload.user.email;
             state.address = action.payload.user.address;
             state.phone =action.payload.user.phone;
             state.error = null;
+            localStorage.setItem("user",JSON.stringify({
+                id : action.payload.user._id,
+                name : action.payload.user.name,
+                email : action.payload.user.email,
+                address : action.payload.user.addCase,
+                phone : action.payload.user.phone,
+                token : action.payload.token
+            }))
+        }).addCase(userSignUp.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.payload; // Store the error message
+        }).addCase(userLogin.pending,(state)=>{
+            state.status = "pending";
+        }).addCase(userLogin.fulfilled,(state,action)=>{
+            state.isLoading = false
+            state.status = "ok";
+            state.id = action.payload.data._id;
+            state.name = action.payload.data.name;
+            state.email = action.payload.data.email;
+            state.address = action.payload.data.address;
+            state.phone =action.payload.data.phone;
+            state.error = null;
         }).addCase(userLogin.rejected,(state,action)=>{
-            state.status = "sign up failed";
+            state.status = "failed";
             state.error = action.payload; 
         })
     }

@@ -5,7 +5,11 @@ import { userForgotPass, userRegistration, usersLogin } from "./middlewares/user
 import { sendMessage } from "./middlewares/messageMiddleware.js";
 import cors from "cors"
 import { users } from "./model/userModel.js";
+import {  authenticate } from "./middlewares/auth.js";
+// import jwtStrategy from 'passport-jwt'
+// import { ExtractJwt } from "passport-jwt";
 //.env file load
+
 config();
 //express 
 const app = express();
@@ -23,6 +27,7 @@ app.listen(3000,()=>{
     console.log("server on")
 })
 
+
 app.get("/",(req,res)=>{
     res.send("hello")
 })
@@ -32,9 +37,9 @@ app.post(`/registration`,userRegistration)
 app.post(`/login`,usersLogin)
 app.post("/forget",userForgotPass)
 
-app.post("/message-send/:user", sendMessage)
+// app.post("/message-send/:user",authenicate, sendMessage)
 
-app.get('/usersList', async (req, res) => {
+app.get('/usersList',authenticate, async (req, res) => {
 
     try {
         const userList = await users.find({});

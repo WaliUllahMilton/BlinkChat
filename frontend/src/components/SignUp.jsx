@@ -4,12 +4,12 @@ import Input from './Input'
 import Button from './Btn'
 // import axios from "axios"
 import { IoClose } from "react-icons/io5";
-import { useDispatch } from 'react-redux';
-import  { userSignUp } from '../features/reducers/userSlice';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = ({onClick}) => {
-    
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    // const dispatch = useDispatch()
     const [formData,setFormData] = useState({
         name : "",
         email : "",
@@ -21,10 +21,20 @@ const SignUp = ({onClick}) => {
     const handleInputChange = (e)=>{
         setFormData({...formData,[e.target.name] : e.target.value})
     }
-    const handleSignup = ()=>{
+    const handleSignup = async ()=>{
         // const {name,email,phone,address,password} = formData;
         const { name, email, phone, address, password } = formData;
-        dispatch(userSignUp({ name, email, phone, address, password }));
+        // dispatch(userSignUp({ name, email, phone, address, password }));
+        try {
+            const response = await axios.post("http://localhost:3000/registration",{
+                name,email,phone,address,password
+            })
+            if(response){
+                navigate("/home")
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
   return (

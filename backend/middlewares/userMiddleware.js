@@ -1,5 +1,8 @@
+import  jwt  from "jsonwebtoken";
 import { users } from "../model/userModel.js";
 import bcrypt from 'bcrypt'
+import  dontenv from "dotenv";
+dontenv.config();
 export const userRegistration = async (req,res)=>{
     const {name,email,phone,address,password} = req.body;
     try {
@@ -25,16 +28,21 @@ export const userRegistration = async (req,res)=>{
             })
         }
         const hashedPassword = bcrypt.hashSync(password,10)
-        const data = new users({
+        const user = new users({
             name:name,
             email:email,
             phone:phone,
             address:address,
             password: hashedPassword})
-        const saveData = await data.save()
+        const saveUser = await user.save()
+        const token = jwt.sign({
+            name : user.name,
+            id : user._id
+        },process.env.TOKEN,{expiresIn : "1h"})
         return res.status(201).json({
             success:true,
-            data:data
+            user : user,
+            token:token
         })
     } catch (error) {
         console.log(error)
@@ -60,11 +68,15 @@ export const usersLogin = async (req,res)=>{
                 message : "Wrong password"
             })
         }
-        // const data = await users.find({email : email, password : password});
+        const token = jwt.sign({
+            name : user.name,
+            id : user._id
+        },process.env.TOKEN,{expiresIn : "1h"})
         return  res.status(200).json({
         success : true,
         message : "login",
-        user
+        data : user,
+        token : token
         })
     } catch (error) {
         console.log(error)
