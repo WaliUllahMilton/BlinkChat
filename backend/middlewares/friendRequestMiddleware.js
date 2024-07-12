@@ -78,3 +78,47 @@ export const sentFriendRequestMidddleware = async (req,res)=>{
         console.log(error)
     }
 }
+
+export const friendRequestAcceptMiddleware = async (req,res)=>{
+    const {friendRequestId} = req.body;
+    try {
+        if(!friendRequestId){
+            res.status(400).json({
+                success : false,
+                message : "somethin wrong"
+            })
+        }
+        const checkFriendRequestStatus = await friendRequest.findById({_id : friendRequestId})
+        if(checkFriendRequestStatus.status === "Accepted"){
+            return res.status(400).json({
+                success : false,
+                message : "you are allready friend"
+            })
+        }
+        const response = await friendRequest.findByIdAndUpdate({_id : friendRequestId},{
+            status : "Accepted"
+        })
+        await response.save();
+        if(response){
+            const updateFriendListForToUser = await users.findById({_id : response.toUser});
+            updateFriendListForToUser.friends.push(response.fromUser);
+            await updateFriendListForToUser.save();
+            const updateFriendListForFromUser = await users.findById({_id : response.fromUser});
+            updateFriendListForFromUser.friends.push(response.toUser);
+            await updateFriendListForFromUser.save();
+            return res.status(200).json({
+                success : true,
+                message : "Friend request accepted",
+                response : response,
+                fromUser : updateFriendListForFromUser
+    
+            });
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getAllFriendRequest = async(req,res)=>{
+    {}
+}

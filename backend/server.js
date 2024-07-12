@@ -6,7 +6,7 @@ import { userForgotPass, userRegistration, usersLogin } from "./middlewares/user
 import cors from "cors"
 import { users } from "./model/userModel.js";
 import {  authenticate } from "./middlewares/auth.js";
-import { sentFriendRequestMidddleware } from "./middlewares/friendRequestMiddleware.js";
+import { friendRequestAcceptMiddleware, sentFriendRequestMidddleware } from "./middlewares/friendRequestMiddleware.js";
 // import jwtStrategy from 'passport-jwt'
 // import { ExtractJwt } from "passport-jwt";
 //.env file load
@@ -58,3 +58,4 @@ app.get('/usersList',authenticate, async (req, res) => {
     });
 
     app.post("/sent-friendRequest",authenticate,sentFriendRequestMidddleware)
+    app.post("/acceptFR",authenticate,friendRequestAcceptMiddleware)

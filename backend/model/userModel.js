@@ -20,6 +20,11 @@ export const userSchema = new mongoose.Schema({
     password : {
         type : String,
         required : true
-    }
+    },
+    friends : [
+        {
+            type :mongoose.ObjectId,
+        }
+    ]
 })
 export const users = mongoose.model("users",userSchema);
