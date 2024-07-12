@@ -2,10 +2,11 @@ import { config } from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import { userForgotPass, userRegistration, usersLogin } from "./middlewares/userMiddleware.js";
-import { sendMessage } from "./middlewares/messageMiddleware.js";
+// import { sendMessage } from "./middlewares/messageMiddleware.js";
 import cors from "cors"
 import { users } from "./model/userModel.js";
 import {  authenticate } from "./middlewares/auth.js";
+import { sentFriendRequestMidddleware } from "./middlewares/friendRequestMiddleware.js";
 // import jwtStrategy from 'passport-jwt'
 // import { ExtractJwt } from "passport-jwt";
 //.env file load
@@ -55,3 +56,5 @@ app.get('/usersList',authenticate, async (req, res) => {
     }
     
     });
+
+    app.post("/sent-friendRequest",authenticate,sentFriendRequestMidddleware)
