@@ -28,7 +28,19 @@ export const sentFriendRequestMidddleware = async (req,res)=>{
             fromUser : fromUser,
             toUser : toUser
         })
+        const checkReqDoubleExist = await friendRequest.find({
+            fromUser : toUser,
+            toUser : fromUser
+        })
        
+        if(checkReqDoubleExist.length !==0){
+            return res.status(400).json({
+                success : false,
+                message : "response",
+                reqId : checkReqDoubleExist[0]._id
+            
+            });
+        }
         if(checkReqExist.length !==0){
             return res.status(400).json({
                 success : false,
@@ -38,6 +50,18 @@ export const sentFriendRequestMidddleware = async (req,res)=>{
             });
         }
         if(checkReqExist.length ===0){
+            const sendReq =new friendRequest({
+                fromUser,
+                toUser
+            })
+            const response = await sendReq.save();
+            return res.status(200).json({
+                success : true,
+                message : "request has been sent",
+                response
+            })
+        }
+        if(checkReqDoubleExist.length ===0){
             const sendReq =new friendRequest({
                 fromUser,
                 toUser
